@@ -1,4 +1,13 @@
+import json
+from numpy import number
 import requests
+import pandas as pd
+
+from enum import IntEnum
+
+class GameConstants(IntEnum):
+    NUMBER_OF_PLAYERS = 10
+
 
 
 # Assign the developpement key located in 'api_key.txt' to api_key.
@@ -35,24 +44,54 @@ def getMatchList(summonerPuuid: str, count: int = 20):
     """
     params = keyParams + f'&count={str(count)}'
     summonerMatchListURL = f"https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{summonerPuuid}/ids" + params
-    summonerMatchList = requests.get(summonerMatchListURL).json()
+    resp = requests.get(summonerMatchListURL)
+    summonerMatchList = resp.json()
     return summonerMatchList
 
 
-def getMatchData(matches: list):
+def getMatchData(matches: list, df: pd.core.frame.DataFrame ):
     """
-    
+    Iterates through the match list fetch the data for each match in the list.
     """
     params = keyParams
-    matchListIterator = 0
     
     for match in matches:
-        matchDataURL = f'https://americas.api.riotgames.com/lol/match/v5/matches/{matches[matchListIterator]}' + params
+        matchDataURL = f'https://americas.api.riotgames.com/lol/match/v5/matches/{match}' + params
         resp = requests.get(matchDataURL)
         matchData = resp.json()
 
-    return matchData
+        for participant in range(GameConstants.NUMBER_OF_PLAYERS):
+            test = matchData['info']['participants'][participant]
+            list = [matchData['metadata']['matchId'],test['puuid'],test['teamId'], test['championId'],
+                    test['championName'],test['role'], test['lane'],test['kills'], test['deaths'], 
+                    test['assists'], test['wardsPlaced'],test['win']]
+                    
+            #insert into the provided dataframe
+            df.loc[0] = list
+            df.index = df.index + 1
+            
+            
 
-print(getSummonerPuuid("PapaMochii"))
-test= "hi"
+    return list
+
+df = pd.DataFrame(columns = ['matchId', 'puuid', 'teamId', 'championId', 'championName',
+                             'role', 'lane', 'kills', 'deaths', 'assists', 'wardsPlaced', 'win'
+                            ])
+
+id = getSummonerPuuid("Sleetus")
+matchlist = getMatchList(id,1)
+matchData = getMatchData(matchlist, df)
+print(df)
+
+print(df.loc[df['puuid'] == id])
+print(id)
+#test = matchData['info']['participants'][9]
+#print(test['teamId'],test['role'],test['lane'],test['kills'], test['deaths'], test['assists'])
+
+#df = pd.DataFrame.from_dict(test, orient='index')
+#getMatchData(matchlist)['info']['participants'][0].keys()
+
+
+
+
 
