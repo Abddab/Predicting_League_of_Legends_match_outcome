@@ -1,1 +1,1 @@
-# Predicting_League_of_Legends_match_outcome
+# Predicting the outcome of a League of Legends Match
