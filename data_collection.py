@@ -8,6 +8,8 @@ from enum import IntEnum
 
 class GameConstants(IntEnum):
     NUMBER_OF_PLAYERS_IN_A_GAME = 10
+    NUMBER_OF_MATCHES = 5
+    PLAYERS_TO_FETCH = 3500
 
 
 
@@ -23,7 +25,8 @@ def getSummoner(summonerName: str, field: str):
     Retrieves the summoner's unique identifier. It is used to fetch a summoner's match data
 
     Parameters:
-    summonerName (str): the name of the summoner
+    summonerName (str): The name of the summoner.
+    field (str): The field you want returned to you. For example, the summoner's 'puuid'.
     """
     params = keyParams
     summonerNameURL = f"https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summonerName}" + params
@@ -32,9 +35,9 @@ def getSummoner(summonerName: str, field: str):
     return summonerInfo
     
 
-def getMatchList(summonerPuuid: str, count: int = 20):
+def getRankedMatchList(summonerPuuid: str, count: int = 20):
     """
-    Returns a list of RANKED match ids. It is used to fetch each match's details
+    Returns a list of RANKED match ids. It is used as an input to fetch each match's details.
 
     Parameters:
     summonerPuuid (str): the summoners puuid
@@ -75,7 +78,7 @@ def getMatchData(match: str):
 
 def loadData(matchData: dict, df: pd.core.frame.DataFrame):
     """
-    Loads the match data (which contains 10 players) in the provided dataframe
+    Loads the match data (which contains 10 players) in the provided dataframe df
     """
     for participant in range(GameConstants.NUMBER_OF_PLAYERS_IN_A_GAME):
             player_data = matchData['info']['participants'][participant]
@@ -95,6 +98,12 @@ def loadData(matchData: dict, df: pd.core.frame.DataFrame):
 
 def getChampionMastery(championId: int, summonerId: str, field: str):
     """
+    Retrieves a summoner's details on their mastery of a certain champion.
+
+    Parameters:
+    championId (int): The id of the champion
+    summonerId (str): The encrypted summonerId
+    field (str): The field you want returned to you. For example, the 'championLevel'
     """
     params = keyParams
     championMasteryURL = f'https://na1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{summonerId}/by-champion/{championId}' + params
@@ -104,21 +113,25 @@ def getChampionMastery(championId: int, summonerId: str, field: str):
     return masteryData
 
 def selectRandomPlayer(puuid: list):
-
+    """
+    Selects a random summoner puuid from a provided list of summoners puuids 
+    """
     return random.choice(puuid)
 
 
 """
 CODE EXECUTION BEGINS HERE
 """
-#The id chosen to start the chain of random selection
+# The id chosen to start the chain of API calls
 id = 'SNPQFj1t1CVQtEm8SQAgXjs_xcH9KGgx5CYQ32KiY8l5YJAyf0-h9YzBs1v2T0HO3Rj5sNnNxs7PFw' 
+
+# a variable that tracks the numbers of players for which we extracted match data
 fetched_players_count = 0
 
-#Until we have fetched the match data for 1000 players, continue to loop
-while fetched_players_count < 1500:
+# Until we have fetched the match data for COUNT_OF_PLAYERS_TO_FETCH amount of players, continue to loop
+while fetched_players_count < GameConstants.PLAYERS_TO_FETCH:
     
-    #reset the dataframes for every player loaded
+    # Reset the dataframes content to empty
     df_matchData = pd.DataFrame(columns = ['matchId','gameDuration(s)','gameMode', 'summonerId', 'puuid', 'teamId', 'championId',
                                  'championName', 'kills', 'deaths', 'assists', 'wardsPlaced', 'win', 'teamPosition'
                                 ])
@@ -126,17 +139,19 @@ while fetched_players_count < 1500:
     df_fetchedPlayers = pd.DataFrame(columns = ['puuid'])
     
 
-    # For each player, gather the data of 7 matches. Note that there's 10 players in each match.
-    matchlist = getMatchList(id, 5)
+    # Retrieve the player's matchlist and gather the data of 5 matches. Note that there's 10 players in each match.
+    matchlist = getRankedMatchList(id, GameConstants.NUMBER_OF_MATCHES)
     for match in matchlist:
         matchData = getMatchData(match)
         loadData(matchData, df_matchData)
     
+    # Into a separated csv, store the list of players's puuids for which we made an API call
     df_fetchedPlayers.loc[0] = id
     df_fetchedPlayers.index += 1
     df_fetchedPlayers.to_csv('fetched_players_list.csv', header = False, index = False, mode = 'a')
 
-    # Once the 7 games for a player have been fetched, select a new random player from the 7 matchs of the previous player
+    # Once the data for a player have been fetched, select a new random player from the list of matches
+    # of the previous player
     id = selectRandomPlayer(df_matchData['puuid'].unique().tolist()) 
     df_matchData.to_csv('league_match_data.csv', header = False, index = False, mode = 'a')
     
