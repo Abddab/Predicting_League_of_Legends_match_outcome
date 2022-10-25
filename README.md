@@ -7,9 +7,13 @@ Before we begin, what exactly is League of Legends? League of Legends (or LoL) i
 
 There's an insane amount of information generated in every single one of the hundreds of millions of games played every single month around the world. Thankfully, Riot Games (the game developer) gives us access to all this data through their **[API](https://developer.riotgames.com/)**.
 ## The Ask, Prepare, Process, Analyze, Share and Act framework
-![image](https://user-images.githubusercontent.com/56210553/197428987-7bc5eec1-386f-467f-bf26-4d6962382dae.png)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/56210553/197674782-91d23cc1-7432-42fe-9dc3-552891fce3ea.png" width="600"/>
+</p>
 
-**(Image taken from the Google Data Analytics course)**
+**(Image from [sudeep.co](https://www.sudeep.co/data-science/2018/02/09/Understanding-the-Data-Science-Lifecycle.html))**
+
+This is the complete cycle we'll go through to reach the goals of the project
 ### Ask
 To ask relevant questions, one should first understand 
 Before collecting the data, features we want to track should be clearly defined. 
