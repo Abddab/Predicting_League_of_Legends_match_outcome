@@ -1,4 +1,4 @@
-# Attempt to predict the outcome of a League of Legends match
+# Attempt to predict the outcome of a League of Legends match (In Progress)
 The goals of this project are to:
 1. Understand which pieces of information (features) have the greatest impact on game results (feature importance) :dart:
 2. Attempt to predict the outcome of a game using data pulled from Riot Games's API :dart:
