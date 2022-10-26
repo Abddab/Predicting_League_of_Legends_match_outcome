@@ -20,7 +20,7 @@ To understand a problem, one should ask relevant questions. And to ask relevant 
 If you take a look at Riot Games's API, there's literally hundreds of different features that could be used to train a predictive model. So the question is: which ones are the most important and the most likely to influence the result of a game? This question is probably impossible to answer without studying every single feature that Riot Games gives us access to, but an experienced player can make an educated guess based on his personal game experience.
 
 Here's some data I think would be interesting to track based on my experience playing League of Legends.
-Let's divide by team data and current game data.
+
 * Check if a player is in 'tilted' state (Lost 2 games in a row). Observe correlation with winning/losing the next game.
 * Check if a player is in 'confident' state (Won 2 games in a row). Observe correlation with winning/losing the next game.
 * Compute the KDA of each player on the team and label them as 'Feeders', 'Carries' or 'Neutral'.
