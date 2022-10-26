@@ -25,6 +25,7 @@ Here's some data I think would be interesting to track based on my experience pl
 * Check if a player is in 'confident' state (Won 2 games in a row). Observe correlation with winning/losing the next game.
 * Compute the KDA of each player on the team and label them as 'Feeders', 'Carries' or 'Neutral'.
 * Look up the global winrates of the champions played by each player. Compare the averages of the winrates and observe if a higher 'quality' of champions correlates with the win of the game.
+* Check if a team has a jungler that performed well in the past.
 
 **To include in the future since it requires additional data (takes a very long time to pull data from the API at the rate allowed of 100 requests per 2 minutes):**
 * Compute the average KDA (kill/death/assist) ratio of the last 5 games played by each member of the teams. Label them as 'Feeders' or 'Carries' or 'Neutral' based on their KDA. Observe the correlation between the number of feeders/carries on a team and the win/loss.
