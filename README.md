@@ -28,9 +28,9 @@ Here's some data I think would be interesting to track based on my experience pl
 * Compare the average vision scores of each team (**Maybe**).
 * Check if a team has a jungler that performed well in the past.
 * Check the mastery level of the champion played by the players. Does a higher number of 'masters' on a team correlate with higher chance of winning?
+* Check the **champion** winrate of each player.
+* Check the **total** winrate of each player and categorize them as 'smurfs' or not.
 
-**To include in the future since it requires additional data (takes a very long time to pull data from the API at the rate allowed of 100 requests per 2 minutes):**
-* Compute the average KDA (kill/death/assist) ratio of the last 5 games played by each member of the teams. Label them as 'Feeders' or 'Carries' or 'Neutral' based on their KDA. Observe the correlation between the number of feeders/carries on a team and the win/loss.
 
 
 
