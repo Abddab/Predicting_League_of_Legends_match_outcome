@@ -37,3 +37,4 @@ Here's some data I think would be interesting to track based on my experience pl
 The impact of all these features will be measured further in the process.
 
 
+### Step 2: Gathering the necessary data
