@@ -12,7 +12,7 @@ class GameConstants(IntEnum):
 
 
 
-# Attribuez la clé de développement située dans 'api_key.txt' à api_key.
+# Assign the development key located in 'api_key.txt' to api_key
 f = open('api_key.txt','r')
 api_key = f.read()
 f.close()
@@ -21,11 +21,11 @@ keyParams = '?api_key=' + api_key
 
 def getSummoner(summonerName: str, field: str):
     """
-    Récupère les informations d'un invocateur en fonction d'un champ spécifique. Il est utilisé pour récupérer les données de match d'un invocateur dans un autre appel API.
+    Retrieves information about a summoner based on a specific field. It is used to fetch match data for a summoner in another API call.
 
-    Paramètres:
-    summonerName (str): Le nom de l'invocateur.
-    field (str): Le champ que vous voulez obtenir. Par exemple, le 'puuid' de l'invocateur.
+    Parameters:
+    summonerName (str): The name of the summoner.
+    field (str): The field you want to obtain. For example, the summoner's 'puuid'.
     """
     params = keyParams
     summonerNameURL = f"https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summonerName}" + params
@@ -36,11 +36,11 @@ def getSummoner(summonerName: str, field: str):
 
 def getRankedMatchList(summonerPuuid: str, count: int = 20):
     """
-    Renvoie une liste d'ID de match classés. Il est utilisé en tant qu'entrée pour récupérer les détails de chaque match dans un autre appel API.
+    Returns a list of sorted match IDs. It is used as input to retrieve the details of each match in another API call.
 
-    Paramètres:
-    summonerPuuid (str): le puuid de l'invocateur
-    count (str): le nombre de matchs à renvoyer entre '0' et '100'. Par défaut à 20.
+    Parameters:
+    summonerPuuid (str): The summoner's PUUID.
+    count (str): The number of matches to return, between '0' and '100'. Defaults to 20.
 
     """
     params = keyParams + f'&type=ranked&count={str(count)}'
@@ -60,7 +60,7 @@ def getRankedMatchList(summonerPuuid: str, count: int = 20):
 
 def getMatchData(match: str):
     """
-    Récupère les données d'un match.
+    Retrieves the data of a match.
     """
     params = keyParams
     matchDataURL = f'https://americas.api.riotgames.com/lol/match/v5/matches/{match}' + params
@@ -79,7 +79,7 @@ def getMatchData(match: str):
 
 def loadData(matchData: dict, df: pd.core.frame.DataFrame):
     """
-    Charge les données de match (qui contiennent 10 joueurs) dans le dataframe df fourni.
+    Loads match data (which contains data for 10 players) into the provided DataFrame, 'df'.
     """
     for participant in range(GameConstants.NUMBER_OF_PLAYERS_IN_A_GAME):
             player_data = matchData['info']['participants'][participant]
@@ -97,12 +97,12 @@ def loadData(matchData: dict, df: pd.core.frame.DataFrame):
 
 def getChampionMastery(championId: int, summonerId: str, field: str):
     """
-    Récupère les détails d'un invocateur sur leur maîtrise d'un certain champion.
+    Retrieves details of a summoner's mastery of a certain champion.
 
-    Paramètres:
-    championId (int): L'ID du champion
-    summonerId (str): L'ID invocateur chiffré
-    field (str): Le champ que vous voulez obtenir. Par exemple, le 'championLevel'
+    Parameters:
+    championId (int): The ID of the champion.
+    summonerId (str): The encrypted summoner ID.
+    field (str): The field you want to obtain. For example, 'championLevel'.
     """
     params = keyParams
     championMasteryURL = f'https://na1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{summonerId}/by-champion/{championId}' + params
@@ -119,23 +119,23 @@ def selectRandomPlayer(puuid: list):
 
 
 """
-L'EXÉCUTION DU CODE COMMENCE ICI
+CODE EXECUTION STARTS HERE
 """
 
 id = 'dhAJ9HbAox7FewEaIlN28yWB8LTZbisT67wGZQ1c1Pi3r2GiU7vqvv6DDIIqrshpkP-gogZL4JhGug' 
 
 fetched_players_count = 0
 
-# Tant que nous n'avons pas récupéré les données de match pour le nombre de joueurs COUNT_OF_PLAYERS_TO_FETCH, continuer à boucler.
+# While we haven't retrieved match data for the number of players specified by COUNT_OF_PLAYERS_TO_FETCH, continue looping.
 while fetched_players_count < 5000:
     
-    # Réinitialise le contenu des dataframes à vide.
+    # Reset the contents of the dataframes to empty.
     df_matchData = pd.DataFrame(columns = ['puuid','summonerId', 'championId','championName', 'win'])
 
     df_fetchedPlayers = pd.DataFrame(columns = ['puuid'])
     
 
-    # Récupère la liste de matchs du joueur et récupère les données de 5 matchs. Notez qu'il y a 10 joueurs dans chaque match.
+    # Retrieve the player's match list and fetch data for 5 matches. Note that there are 10 players in each match.
     matchlist = getRankedMatchList(id, 5)
 
     for match in matchlist:
@@ -144,8 +144,7 @@ while fetched_players_count < 5000:
 
 
 
-    #Une fois les données d'un joueur récupérées, sélectionnez un nouveau joueur au hasard dans la liste de matchs
-    #du joueur précédent
+    # Once the data for a player is retrieved, randomly select a new player from the match list of the previous player.
     id = selectRandomPlayer(df_matchData['puuid'].unique().tolist()) 
     df_matchData.to_csv('LoL_Match_Data.csv', header = False, index = False, mode = 'a')
     
