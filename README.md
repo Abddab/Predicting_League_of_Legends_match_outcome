@@ -44,7 +44,13 @@ https://github.com/Abddab/Predicting_League_of_Legends_match_outcome/blob/main/d
 
 The script has been written to extract data from the Riot Games’s API. Since the Riot Games API has a rate limit of 100 API Calls per 2 minutes, a snippet of code has been built into the script to wait for the rate limit to expire before continuing the execution of the code. 
 
-Extracted data is continuously appended to a csv file while data extraction occurs.
+<p align="center">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/56210553/262516674-8666c161-5839-4c85-8ad0-8a45f74f7e0a.png" width="600"/>
+</p>
+
+
+
+
  
 Below is a sample of the data I have decided to extract. This raw data will be useful to engineer the features that will go into training the predictive model.
  
