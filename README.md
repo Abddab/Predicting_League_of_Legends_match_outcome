@@ -56,7 +56,7 @@ Below is a sample of the data I have decided to extract. This raw data will be u
   <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/56210553/262517011-730a9b4d-9368-4621-8995-2914320d4f2e.png" width="600"/>
 </p>
 
-
+**[Click for a link to the sample data extracted](Sample_League_Data.csv)**
 Considering the rate limit imposed by Riot Games, the script will have to run multiple hours (if not days) to extract an amount of data that is suitable for the training of a predictive model. 
 
 ### Step 3: Building a predictive model
