@@ -39,8 +39,10 @@ The impact of all these features will be measured further in the process.
 
 ### Step 2: Gathering the necessary data
 
-Link to the Python Script on my Github: https://github.com/Abddab/Predicting_League_of_Legends_match_outcome/blob/main/data_collection.py
-A script has been written to extract data from the Riot Games’s API. Since the Riot Games API has a rate limit of 100 API Calls per 2 minutes, a snippet of code has been built into the script to wait for the rate limit to expire before continuing the execution of the code. 
+Link to the Python Script: 
+https://github.com/Abddab/Predicting_League_of_Legends_match_outcome/blob/main/data_collection.py
+
+The script has been written to extract data from the Riot Games’s API. Since the Riot Games API has a rate limit of 100 API Calls per 2 minutes, a snippet of code has been built into the script to wait for the rate limit to expire before continuing the execution of the code. 
 
 Extracted data is continuously appended to a csv file while data extraction occurs.
  
